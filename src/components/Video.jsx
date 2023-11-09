@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Video.css'
 import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
-export default function Video({ videoFile }) {
+export default function Video({ videoFile, onDurationChange }) {
 
     const canvasRef = useRef(null);
     const videoRef = useRef(null);
@@ -56,15 +56,19 @@ export default function Video({ videoFile }) {
         const handleCanPlay = () => {
             setCanPlay(true);
         };
+        const handleDurationChange = () => {
+            onDurationChange(video.duration);
+        };
 
         if (videoFile) {
             const videoURL = URL.createObjectURL(videoFile);
             setVideoSource(videoURL);
             video.load();
+            canvas.addEventListener('click', togglePlayPause);
+            video.addEventListener('durationchange', handleDurationChange);
         }
 
         video.addEventListener('canplay', handleCanPlay);
-        canvas.addEventListener('click', togglePlayPause);
         canvas.addEventListener('mouseenter', handleMouseEnter);
         canvas.addEventListener('mouseleave', handleMouseLeave);
 
@@ -76,7 +80,7 @@ export default function Video({ videoFile }) {
             video.removeEventListener('canplay', handleCanPlay);
         };
 
-    }, [videoFile, canPlay])
+    }, [videoFile, canPlay, onDurationChange])
 
 
     return (

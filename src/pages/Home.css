@@ -1,0 +1,9 @@
+.home{
+    padding: 40px;
+}
+
+.middle{
+    display: flex;
+    margin: 40px 0;
+    gap: 40px;
+}
