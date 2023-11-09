@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Video.css'
-import videoSource from "../sample.mp4"
 import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
-export default function Video() {
+export default function Video({ videoFile }) {
 
     const canvasRef = useRef(null);
     const videoRef = useRef(null);
     const [showControls, setShowControls] = useState(true);
-    const [iconState, setIconState] = useState("play");
+    const [iconState, setIconState] = useState("pause");
+    const [videoSource, setVideoSource] = useState(null);
+    const [canPlay, setCanPlay] = useState(false);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -52,7 +53,17 @@ export default function Video() {
         const handleMouseLeave = () => {
             setShowControls(false);
         }
+        const handleCanPlay = () => {
+            setCanPlay(true);
+        };
 
+        if (videoFile) {
+            const videoURL = URL.createObjectURL(videoFile);
+            setVideoSource(videoURL);
+            video.load();
+        }
+
+        video.addEventListener('canplay', handleCanPlay);
         canvas.addEventListener('click', togglePlayPause);
         canvas.addEventListener('mouseenter', handleMouseEnter);
         canvas.addEventListener('mouseleave', handleMouseLeave);
@@ -62,15 +73,16 @@ export default function Video() {
             canvas.removeEventListener('click', togglePlayPause);
             canvas.removeEventListener('mouseenter', handleMouseEnter);
             canvas.removeEventListener('mouseleave', handleMouseLeave);
+            video.removeEventListener('canplay', handleCanPlay);
         };
 
-    }, [])
+    }, [videoFile, canPlay])
 
 
     return (
         <div className="video">
             <canvas width="600" height="400" ref={canvasRef}></canvas>
-            {showControls &&
+            {videoFile && showControls &&
                 <div className="controls">
                     <div className="playPauseIcon" onClick={videoRef.current && videoRef.current.click()}>
                         {iconState === "play" ? <AiFillPlayCircle className='icon' size={56} /> : <AiFillPauseCircle className='icon' size={56} />}
@@ -91,5 +103,6 @@ export default function Video() {
                 Your browser does not support the video tag.
             </video>
         </div>
+
     )
 }
