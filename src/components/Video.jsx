@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Video.css'
 import videoSource from "../sample.mp4"
+import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
 export default function Video() {
 
     const canvasRef = useRef(null);
@@ -25,8 +26,10 @@ export default function Video() {
         const togglePlayPause = () => {
             if (video.paused) {
                 video.play();
+                setIconState("pause");
             } else {
                 video.pause();
+                setIconState("play");
             }
         };
 
@@ -70,7 +73,7 @@ export default function Video() {
             {showControls &&
                 <div className="controls">
                     <div className="playPauseIcon" onClick={videoRef.current && videoRef.current.click()}>
-                        {videoRef.current && videoRef.current.paused ? '▶️' : '⏸️'}
+                        {iconState === "play" ? <AiFillPlayCircle className='icon' size={56} /> : <AiFillPauseCircle className='icon' size={56} />}
                     </div>
                 </div>
             }
