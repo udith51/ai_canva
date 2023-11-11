@@ -8,17 +8,17 @@ export default function Video({ videoFile, videoSource, onDurationChange }) {
     const [showControls, setShowControls] = useState(true);
     const [iconState, setIconState] = useState("pause");
     const [canPlay, setCanPlay] = useState(false);
+    const width = 650;
+    const height = 475;
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const video = videoRef.current;
         const fps = 60;
-        canvas.width = 600;
-        canvas.height = 400;
 
         const drawImage = () => {
             const ctx = canvas.getContext('2d', { alpha: false });
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(video, 0, 0, width, height);
         };
 
         let canvasInterval;
@@ -81,7 +81,7 @@ export default function Video({ videoFile, videoSource, onDurationChange }) {
 
     return (
         <div className="video">
-            <canvas width="600" height="400" ref={canvasRef}></canvas>
+            <canvas width={width} height={height} ref={canvasRef}></canvas>
             {videoFile && showControls &&
                 <div className="controls">
                     <div className="playPauseIcon"

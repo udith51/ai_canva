@@ -1,4 +1,5 @@
 import React from 'react'
+import "./Metadata.css"
 
 export default function Metadata({ file, duration }) {
     let dateObj = file.lastModifiedDate;
@@ -8,13 +9,18 @@ export default function Metadata({ file, duration }) {
 
     return (
         <div className="metadata">
-            File Name: {file.name}
-            <br />
-            Duration: {Math.floor(duration)} sec
-            <br />
-            LastModified: {day}-{month}-{year}
-            <br />
-            Type: {file.type}
+            <div >
+                File Name: {file.name}
+            </div>
+            <div >
+                Duration: {Math.floor(duration)} sec
+            </div>
+            <div >
+                LastModified: {day}-{month}-{year}
+            </div>
+            <div >
+                Type: {file.type}
+            </div>
         </div>
     )
 }

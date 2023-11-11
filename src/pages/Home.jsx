@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Video from '../components/Video';
 import Metadata from '../components/Metadata';
 import "./Home.css";
+import { AiOutlineCloudUpload } from 'react-icons/ai';
 
 export default function Home() {
     const [videoFile, setVideoFile] = useState(null);
@@ -21,7 +22,10 @@ export default function Home() {
     return (
         <div className="home">
             <div className="top">
-                <input type="file" accept='video/*' onChange={handleFileChange} />
+                <label htmlFor="file-upload" class="custom-file-upload">
+                    <AiOutlineCloudUpload /> Custom Upload
+                </label>
+                <input id="file-upload" type="file" accept='video/*' onChange={handleFileChange} />
             </div>
             <div className="middle">
                 <Video videoFile={videoFile}

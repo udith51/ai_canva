@@ -1,9 +1,33 @@
 .home{
     padding: 40px;
+    height: 100%;
 }
 
 .middle{
     display: flex;
     margin: 40px 0;
     gap: 40px;
+}
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 15px;
+    color: white;
+}
+
+.middle{
+    padding: 5px;
+    height: 485px;
+    background-color: black;
+    color: white;
+    display: flex;
+    align-self: center;
+    justify-content: space-evenly;
+    font-size: 18px;
 }

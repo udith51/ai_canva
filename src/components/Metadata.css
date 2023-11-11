@@ -1,0 +1,7 @@
+.metadata{
+    padding: 30px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
