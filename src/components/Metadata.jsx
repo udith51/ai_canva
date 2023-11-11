@@ -10,7 +10,7 @@ export default function Metadata({ file, duration }) {
         <div className="metadata">
             File Name: {file.name}
             <br />
-            Duration: {duration}
+            Duration: {Math.floor(duration)} sec
             <br />
             LastModified: {day}-{month}-{year}
             <br />

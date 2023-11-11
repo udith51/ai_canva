@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Video.css'
 import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
-export default function Video({ videoFile, onDurationChange }) {
+export default function Video({ videoFile, videoSource, onDurationChange }) {
 
     const canvasRef = useRef(null);
     const videoRef = useRef(null);
     const [showControls, setShowControls] = useState(true);
     const [iconState, setIconState] = useState("pause");
-    const [videoSource, setVideoSource] = useState(null);
     const [canPlay, setCanPlay] = useState(false);
 
     useEffect(() => {
@@ -30,39 +29,36 @@ export default function Video({ videoFile, onDurationChange }) {
                 setIconState("pause");
             } else {
                 video.pause();
-                setIconState("play");
+                setIconState("play")
             }
         };
-
-        video.onpause = function () {
-            clearInterval(canvasInterval);
-        };
-        video.onended = function () {
-            clearInterval(canvasInterval);
-        };
-        video.onplay = function () {
+        video.onplay = () => {
             clearInterval(canvasInterval);
             canvasInterval = window.setInterval(() => {
                 drawImage(video);
             }, 1000 / fps);
         };
+        video.onpause = () => {
+            clearInterval(canvasInterval);
+        };
+        video.onended = () => {
+            clearInterval(canvasInterval);
+        };
 
+        const handleCanPlay = () => {
+            setCanPlay(true);
+        };
         const handleMouseEnter = () => {
             setShowControls(true);
         }
         const handleMouseLeave = () => {
             setShowControls(false);
         }
-        const handleCanPlay = () => {
-            setCanPlay(true);
-        };
         const handleDurationChange = () => {
             onDurationChange(video.duration);
         };
 
         if (videoFile) {
-            const videoURL = URL.createObjectURL(videoFile);
-            setVideoSource(videoURL);
             video.load();
             canvas.addEventListener('click', togglePlayPause);
             video.addEventListener('durationchange', handleDurationChange);
@@ -79,8 +75,8 @@ export default function Video({ videoFile, onDurationChange }) {
             canvas.removeEventListener('mouseleave', handleMouseLeave);
             video.removeEventListener('canplay', handleCanPlay);
         };
+    }, [videoFile, canPlay, onDurationChange]);
 
-    }, [videoFile, canPlay, onDurationChange])
 
 
     return (
@@ -88,8 +84,9 @@ export default function Video({ videoFile, onDurationChange }) {
             <canvas width="600" height="400" ref={canvasRef}></canvas>
             {videoFile && showControls &&
                 <div className="controls">
-                    <div className="playPauseIcon" onClick={videoRef.current && videoRef.current.click()}>
-                        {iconState === "play" ? <AiFillPlayCircle className='icon' size={56} /> : <AiFillPauseCircle className='icon' size={56} />}
+                    <div className="playPauseIcon"
+                        onClick={videoRef.current && videoRef.current.click()}>
+                        {iconState === "pause" ? <AiFillPauseCircle className='icon' size={56} /> : <AiFillPlayCircle className='icon' size={56} />}
                     </div>
                 </div>
             }
@@ -106,6 +103,7 @@ export default function Video({ videoFile, onDurationChange }) {
                 <source src={videoSource} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
+
         </div>
 
     )

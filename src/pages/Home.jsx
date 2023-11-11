@@ -1,17 +1,19 @@
-import React, { useState } from 'react'
-import Video from '../components/Video'
+import React, { useState } from 'react';
+import Video from '../components/Video';
 import Metadata from '../components/Metadata';
-import "./Home.css"
+import "./Home.css";
 
 export default function Home() {
-    const [file, setFile] = useState(null);
+    const [videoFile, setVideoFile] = useState(null);
     const [duration, setDuration] = useState(null);
+    const [videoSource, setVideoSource] = useState(null);
 
     const handleFileChange = (e) => {
-        e.target.files && setFile(e.target.files[0]);
-        console.dir(e.target.files[0]);
+        e.target.files && setVideoFile(e.target.files[0]);
+        setVideoSource(e.target.files && URL.createObjectURL(e.target.files[0]));
         setDuration(null);
-    }
+    };
+
     const handleDurationChange = (duration) => {
         setDuration(duration);
     };
@@ -22,13 +24,14 @@ export default function Home() {
                 <input type="file" accept='video/*' onChange={handleFileChange} />
             </div>
             <div className="middle">
-                <Video videoFile={file} onDurationChange={handleDurationChange} />
-
-                {file && <Metadata file={file} duration={duration} />}
+                <Video videoFile={videoFile}
+                    videoSource={videoSource}
+                    onDurationChange={handleDurationChange} />
+                {videoFile && <Metadata file={videoFile} duration={duration} />}
             </div>
             <div className="bottom">
-
+                {/* Additional content in the bottom section if needed */}
             </div>
         </div>
-    )
+    );
 }
